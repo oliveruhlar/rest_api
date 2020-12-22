@@ -1,0 +1,34 @@
+{
+    "POST": [
+      {
+        "id": 1,
+        "Country": "United Kingdom",
+        "Airport": "Heathrow Airport",
+        "City": "London",
+        "Passengers": 80886589
+      },
+      {
+        "id": 2,
+        "Country": "France",
+        "Airport": "Charles de Gaulle Airport",
+        "City": "Paris",
+        "Passengers": 76150007
+      },
+      {
+        "id": 3,
+        "Country": "Netherlands",
+        "Airport": "Amsterdam Airport Schiphol",
+        "City": "Amsterdam",
+        "Passengers": 71707144
+      }
+    ],
+    "PUT": 
+      {
+        "id": 3,
+        "Passengers": 93000000
+      },
+    "DELETE":
+      {
+        "id": [1,2]
+      }
+  }

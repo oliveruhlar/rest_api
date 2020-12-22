@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.2.2 (Python 3.9.0 on win32)" generated="20201222 11:52:31.233" rpa="false">
+<suite id="s1" name="Test Rest Api" source="C:\Users\oliver.uhlar\Desktop\Projects\rest_api\test_rest_api.robot">
+<kw name="Start setup" type="setup">
+<kw name="Start Process" library="Process">
+<doc>Starts a new process on background.</doc>
+<arguments>
+<arg>wamp.bat</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.289" level="INFO">Starting process:
+wamp.bat</msg>
+<status status="PASS" starttime="20201222 11:52:31.289" endtime="20201222 11:52:31.291"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.288" endtime="20201222 11:52:31.291"></status>
+</kw>
+<test id="s1-t1" name="Test wamp is booted">
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<arguments>
+<arg>40s</arg>
+<arg>5s</arg>
+<arg>Is wamp booted</arg>
+</arguments>
+<kw name="Is wamp booted">
+<kw name="Connect To Database" library="DatabaseLibrary">
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<arguments>
+<arg>dbConfigFile=db.cfg</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.341" level="INFO">Connecting using : pymysql.connect(db=myfirstdb, user=oliveruhlar, passwd=2BisxP1k3NdBDZ1E, host=localhost, port=3308, charset=None) </msg>
+<status status="PASS" starttime="20201222 11:52:31.294" endtime="20201222 11:52:31.355"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.293" endtime="20201222 11:52:31.355"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.293" endtime="20201222 11:52:31.355"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.291" endtime="20201222 11:52:31.356" critical="yes"></status>
+</test>
+<test id="s1-t2" name="Create table">
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>CREATE TABLE airports_europe (`id` integer, `Country` varchar(100), `Airport` varchar(200), `City` varchar(200), `Passengers` integer)</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.358" level="INFO">Executing : Query  |  CREATE TABLE airports_europe (`id` integer, `Country` varchar(100), `Airport` varchar(200), `City` varchar(200), `Passengers` integer) </msg>
+<status status="PASS" starttime="20201222 11:52:31.358" endtime="20201222 11:52:31.389"></status>
+</kw>
+<kw name="Table Must Exist" library="DatabaseLibrary">
+<doc>Check if the table given exists in the database. Set optional input `sansTran` to True to run command without an
+explicit transaction commit or rollback.</doc>
+<arguments>
+<arg>airports_europe</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.391" level="INFO">Executing : Table Must Exist  |  airports_europe </msg>
+<msg timestamp="20201222 11:52:31.391" level="INFO">Executing : Row Count  |  SELECT * FROM information_schema.tables WHERE table_name='airports_europe' </msg>
+<status status="PASS" starttime="20201222 11:52:31.390" endtime="20201222 11:52:31.397"></status>
+</kw>
+<kw name="Row Count Is Equal To X" library="DatabaseLibrary">
+<doc>Check if the number of rows returned from `selectStatement` is equal to the value submitted. If not, then this
+will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+transaction commit or rollback.</doc>
+<arguments>
+<arg>SELECT * FROM airports_europe</arg>
+<arg>0</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.399" level="INFO">Executing : Row Count Is Equal To X  |  SELECT * FROM airports_europe  |  0 </msg>
+<msg timestamp="20201222 11:52:31.399" level="INFO">Executing : Row Count  |  SELECT * FROM airports_europe </msg>
+<status status="PASS" starttime="20201222 11:52:31.399" endtime="20201222 11:52:31.401"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.357" endtime="20201222 11:52:31.408" critical="yes"></status>
+</test>
+<test id="s1-t3" name="Test POST">
+<kw name="Json To Dict" library="json_parser">
+<arguments>
+<arg>${json_path}</arg>
+</arguments>
+<assign>
+<var>${json_dict}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.415" level="INFO">${json_dict} = {'POST': [{'id': 1, 'Country': 'United Kingdom', 'Airport': 'Heathrow Airport', 'City': 'London', 'Passengers': 80886589}, {'id': 2, 'Country': 'France', 'Airport': 'Charles de Gaulle Airport', 'City'...</msg>
+<status status="PASS" starttime="20201222 11:52:31.412" endtime="20201222 11:52:31.415"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${json_dict['POST']}</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.416" level="INFO">[{'id': 1, 'Country': 'United Kingdom', 'Airport': 'Heathrow Airport', 'City': 'London', 'Passengers': 80886589}, {'id': 2, 'Country': 'France', 'Airport': 'Charles de Gaulle Airport', 'City': 'Paris', 'Passengers': 76150007}, {'id': 3, 'Country': 'Netherlands', 'Airport': 'Amsterdam Airport Schiphol', 'City': 'Amsterdam', 'Passengers': 71707144}]</msg>
+<status status="PASS" starttime="20201222 11:52:31.415" endtime="20201222 11:52:31.416"></status>
+</kw>
+<kw name="${airport} IN [ @{json_dict['POST']} ]" type="for">
+<kw name="${airport} = {'id': 1, 'Country': 'United Kingdom', 'Airport': 'Heathrow Airport', 'City': 'London', 'Passengers': 80886589}" type="foritem">
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<arguments>
+<arg>${post_counter} + 1</arg>
+</arguments>
+<assign>
+<var>${post_counter}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.418" level="INFO">${post_counter} = 1</msg>
+<status status="PASS" starttime="20201222 11:52:31.417" endtime="20201222 11:52:31.418"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>INSERT INTO `airports_europe` (`id`, `Country`, `Airport`, `City`, `Passengers`) VALUES (${airport['id']},'${airport['Country']}','${airport['Airport']}','${airport['City']}',${airport['Passengers']})</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.418" level="INFO">Executing : Query  |  INSERT INTO `airports_europe` (`id`, `Country`, `Airport`, `City`, `Passengers`) VALUES (1,'United Kingdom','Heathrow Airport','London',80886589) </msg>
+<status status="PASS" starttime="20201222 11:52:31.418" endtime="20201222 11:52:31.419"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.417" endtime="20201222 11:52:31.419"></status>
+</kw>
+<kw name="${airport} = {'id': 2, 'Country': 'France', 'Airport': 'Charles de Gaulle Airport', 'City': 'Paris', 'Passengers': 76150007}" type="foritem">
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<arguments>
+<arg>${post_counter} + 1</arg>
+</arguments>
+<assign>
+<var>${post_counter}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.420" level="INFO">${post_counter} = 2</msg>
+<status status="PASS" starttime="20201222 11:52:31.419" endtime="20201222 11:52:31.420"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>INSERT INTO `airports_europe` (`id`, `Country`, `Airport`, `City`, `Passengers`) VALUES (${airport['id']},'${airport['Country']}','${airport['Airport']}','${airport['City']}',${airport['Passengers']})</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.421" level="INFO">Executing : Query  |  INSERT INTO `airports_europe` (`id`, `Country`, `Airport`, `City`, `Passengers`) VALUES (2,'France','Charles de Gaulle Airport','Paris',76150007) </msg>
+<status status="PASS" starttime="20201222 11:52:31.420" endtime="20201222 11:52:31.422"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.419" endtime="20201222 11:52:31.422"></status>
+</kw>
+<kw name="${airport} = {'id': 3, 'Country': 'Netherlands', 'Airport': 'Amsterdam Airport Schiphol', 'City': 'Amsterdam', 'Passengers': 71707144}" type="foritem">
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<arguments>
+<arg>${post_counter} + 1</arg>
+</arguments>
+<assign>
+<var>${post_counter}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.422" level="INFO">${post_counter} = 3</msg>
+<status status="PASS" starttime="20201222 11:52:31.422" endtime="20201222 11:52:31.422"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>INSERT INTO `airports_europe` (`id`, `Country`, `Airport`, `City`, `Passengers`) VALUES (${airport['id']},'${airport['Country']}','${airport['Airport']}','${airport['City']}',${airport['Passengers']})</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.423" level="INFO">Executing : Query  |  INSERT INTO `airports_europe` (`id`, `Country`, `Airport`, `City`, `Passengers`) VALUES (3,'Netherlands','Amsterdam Airport Schiphol','Amsterdam',71707144) </msg>
+<status status="PASS" starttime="20201222 11:52:31.422" endtime="20201222 11:52:31.423"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.422" endtime="20201222 11:52:31.423"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.417" endtime="20201222 11:52:31.423"></status>
+</kw>
+<kw name="Row Count" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query the database and returns the number of rows from the query. Set
+optional input `sansTran` to True to run command without an explicit transaction commit or rollback.</doc>
+<arguments>
+<arg>SELECT * FROM airports_europe</arg>
+</arguments>
+<assign>
+<var>${rowCount}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.424" level="INFO">Executing : Row Count  |  SELECT * FROM airports_europe </msg>
+<msg timestamp="20201222 11:52:31.425" level="INFO">${rowCount} = 3</msg>
+<status status="PASS" starttime="20201222 11:52:31.424" endtime="20201222 11:52:31.425"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${post_counter}</arg>
+<arg>${rowCount}</arg>
+</arguments>
+<status status="PASS" starttime="20201222 11:52:31.426" endtime="20201222 11:52:31.428"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.410" endtime="20201222 11:52:31.428" critical="yes"></status>
+</test>
+<test id="s1-t4" name="Test GET">
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT * FROM airports_europe</arg>
+</arguments>
+<assign>
+<var>${table}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.430" level="INFO">Executing : Query  |  SELECT * FROM airports_europe </msg>
+<msg timestamp="20201222 11:52:31.431" level="INFO">${table} = ((1, 'United Kingdom', 'Heathrow Airport', 'London', 80886589), (2, 'France', 'Charles de Gaulle Airport', 'Paris', 76150007), (3, 'Netherlands', 'Amsterdam Airport Schiphol', 'Amsterdam', 71707144))</msg>
+<status status="PASS" starttime="20201222 11:52:31.430" endtime="20201222 11:52:31.431"></status>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<arguments>
+<arg>@{table}</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.432" level="INFO">(1, 'United Kingdom', 'Heathrow Airport', 'London', 80886589)</msg>
+<msg timestamp="20201222 11:52:31.432" level="INFO">(2, 'France', 'Charles de Gaulle Airport', 'Paris', 76150007)</msg>
+<msg timestamp="20201222 11:52:31.432" level="INFO">(3, 'Netherlands', 'Amsterdam Airport Schiphol', 'Amsterdam', 71707144)</msg>
+<status status="PASS" starttime="20201222 11:52:31.431" endtime="20201222 11:52:31.432"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.429" endtime="20201222 11:52:31.434" critical="yes"></status>
+</test>
+<test id="s1-t5" name="Test PUT">
+<kw name="Json To Dict" library="json_parser">
+<arguments>
+<arg>${json_path}</arg>
+</arguments>
+<assign>
+<var>${json_dict}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.437" level="INFO">${json_dict} = {'POST': [{'id': 1, 'Country': 'United Kingdom', 'Airport': 'Heathrow Airport', 'City': 'London', 'Passengers': 80886589}, {'id': 2, 'Country': 'France', 'Airport': 'Charles de Gaulle Airport', 'City'...</msg>
+<status status="PASS" starttime="20201222 11:52:31.437" endtime="20201222 11:52:31.437"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${json_dict['PUT']}</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.439" level="INFO">{'id': 3, 'Passengers': 93000000}</msg>
+<status status="PASS" starttime="20201222 11:52:31.439" endtime="20201222 11:52:31.439"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>UPDATE airports_europe SET `Passengers`= ${json_dict['PUT']['Passengers']} WHERE id = ${json_dict['PUT']['id']}</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.440" level="INFO">Executing : Query  |  UPDATE airports_europe SET `Passengers`= 93000000 WHERE id = 3 </msg>
+<status status="PASS" starttime="20201222 11:52:31.440" endtime="20201222 11:52:31.441"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT Passengers FROM airports_europe WHERE id = ${json_dict['PUT']['id']}</arg>
+</arguments>
+<assign>
+<var>${check_value}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.442" level="INFO">Executing : Query  |  SELECT Passengers FROM airports_europe WHERE id = 3 </msg>
+<msg timestamp="20201222 11:52:31.443" level="INFO">${check_value} = ((93000000,),)</msg>
+<status status="PASS" starttime="20201222 11:52:31.441" endtime="20201222 11:52:31.443"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${check_value[0][0]}</arg>
+<arg>${json_dict['PUT']['Passengers']}</arg>
+</arguments>
+<status status="PASS" starttime="20201222 11:52:31.444" endtime="20201222 11:52:31.446"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT * FROM airports_europe</arg>
+</arguments>
+<assign>
+<var>${table}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.449" level="INFO">Executing : Query  |  SELECT * FROM airports_europe </msg>
+<msg timestamp="20201222 11:52:31.452" level="INFO">${table} = ((1, 'United Kingdom', 'Heathrow Airport', 'London', 80886589), (2, 'France', 'Charles de Gaulle Airport', 'Paris', 76150007), (3, 'Netherlands', 'Amsterdam Airport Schiphol', 'Amsterdam', 93000000))</msg>
+<status status="PASS" starttime="20201222 11:52:31.449" endtime="20201222 11:52:31.452"></status>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<arguments>
+<arg>@{table}</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.453" level="INFO">(1, 'United Kingdom', 'Heathrow Airport', 'London', 80886589)</msg>
+<msg timestamp="20201222 11:52:31.453" level="INFO">(2, 'France', 'Charles de Gaulle Airport', 'Paris', 76150007)</msg>
+<msg timestamp="20201222 11:52:31.453" level="INFO">(3, 'Netherlands', 'Amsterdam Airport Schiphol', 'Amsterdam', 93000000)</msg>
+<status status="PASS" starttime="20201222 11:52:31.452" endtime="20201222 11:52:31.453"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.435" endtime="20201222 11:52:31.453" critical="yes"></status>
+</test>
+<test id="s1-t6" name="Test DELETE">
+<kw name="Json To Dict" library="json_parser">
+<arguments>
+<arg>${json_path}</arg>
+</arguments>
+<assign>
+<var>${json_dict}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.456" level="INFO">${json_dict} = {'POST': [{'id': 1, 'Country': 'United Kingdom', 'Airport': 'Heathrow Airport', 'City': 'London', 'Passengers': 80886589}, {'id': 2, 'Country': 'France', 'Airport': 'Charles de Gaulle Airport', 'City'...</msg>
+<status status="PASS" starttime="20201222 11:52:31.456" endtime="20201222 11:52:31.456"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${json_dict['DELETE']}</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.456" level="INFO">{'id': [1, 2]}</msg>
+<status status="PASS" starttime="20201222 11:52:31.456" endtime="20201222 11:52:31.456"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>DELETE FROM airports_europe WHERE id IN (${json_dict['DELETE']['id'][0]},${json_dict['DELETE']['id'][1]})</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.457" level="INFO">Executing : Query  |  DELETE FROM airports_europe WHERE id IN (1,2) </msg>
+<status status="PASS" starttime="20201222 11:52:31.457" endtime="20201222 11:52:31.459"></status>
+</kw>
+<kw name="Row Count Is Equal To X" library="DatabaseLibrary">
+<doc>Check if the number of rows returned from `selectStatement` is equal to the value submitted. If not, then this
+will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+transaction commit or rollback.</doc>
+<arguments>
+<arg>SELECT * FROM airports_europe</arg>
+<arg>1</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.459" level="INFO">Executing : Row Count Is Equal To X  |  SELECT * FROM airports_europe  |  1 </msg>
+<msg timestamp="20201222 11:52:31.459" level="INFO">Executing : Row Count  |  SELECT * FROM airports_europe </msg>
+<status status="PASS" starttime="20201222 11:52:31.459" endtime="20201222 11:52:31.460"></status>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>SELECT * FROM airports_europe</arg>
+</arguments>
+<assign>
+<var>${table}</var>
+</assign>
+<msg timestamp="20201222 11:52:31.465" level="INFO">Executing : Query  |  SELECT * FROM airports_europe </msg>
+<msg timestamp="20201222 11:52:31.466" level="INFO">${table} = ((3, 'Netherlands', 'Amsterdam Airport Schiphol', 'Amsterdam', 93000000),)</msg>
+<status status="PASS" starttime="20201222 11:52:31.464" endtime="20201222 11:52:31.466"></status>
+</kw>
+<kw name="Log Many" library="BuiltIn">
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<arguments>
+<arg>@{table}</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.466" level="INFO">(3, 'Netherlands', 'Amsterdam Airport Schiphol', 'Amsterdam', 93000000)</msg>
+<status status="PASS" starttime="20201222 11:52:31.466" endtime="20201222 11:52:31.466"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.455" endtime="20201222 11:52:31.467" critical="yes"></status>
+</test>
+<test id="s1-t7" name="Drop table">
+<kw name="Query" library="DatabaseLibrary">
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<arguments>
+<arg>DROP TABLE airports_europe</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.469" level="INFO">Executing : Query  |  DROP TABLE airports_europe </msg>
+<status status="PASS" starttime="20201222 11:52:31.469" endtime="20201222 11:52:31.482"></status>
+</kw>
+<kw name="Run Keyword And Expect Error" library="BuiltIn">
+<doc>Runs the keyword and checks that the expected error occurred.</doc>
+<arguments>
+<arg>Table 'airports_europe' does not exist in the db</arg>
+<arg>Table Must Exist</arg>
+<arg>airports_europe</arg>
+</arguments>
+<kw name="Table Must Exist" library="DatabaseLibrary">
+<doc>Check if the table given exists in the database. Set optional input `sansTran` to True to run command without an
+explicit transaction commit or rollback.</doc>
+<arguments>
+<arg>airports_europe</arg>
+</arguments>
+<msg timestamp="20201222 11:52:31.483" level="INFO">Executing : Table Must Exist  |  airports_europe </msg>
+<msg timestamp="20201222 11:52:31.483" level="INFO">Executing : Row Count  |  SELECT * FROM information_schema.tables WHERE table_name='airports_europe' </msg>
+<msg timestamp="20201222 11:52:31.484" level="FAIL">Table 'airports_europe' does not exist in the db</msg>
+<status status="FAIL" starttime="20201222 11:52:31.483" endtime="20201222 11:52:31.484"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.482" endtime="20201222 11:52:31.484"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.469" endtime="20201222 11:52:31.487" critical="yes"></status>
+</test>
+<kw name="Teardown setup" type="teardown">
+<kw name="Disconnect From Database" library="DatabaseLibrary">
+<doc>Disconnects from the database.</doc>
+<msg timestamp="20201222 11:52:31.490" level="INFO">Executing : Disconnect From Database</msg>
+<status status="PASS" starttime="20201222 11:52:31.490" endtime="20201222 11:52:31.490"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.489" endtime="20201222 11:52:31.490"></status>
+</kw>
+<status status="PASS" starttime="20201222 11:52:31.238" endtime="20201222 11:52:31.490"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="7" fail="0">Critical Tests</stat>
+<stat pass="7" fail="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="7" fail="0" id="s1" name="Test Rest Api">Test Rest Api</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
